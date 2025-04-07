@@ -26,7 +26,7 @@ export function LoginForm() {
     const result = await signIn(data);
     if (result.status === "success") {
       toast.success("Login successful");
-      router.push("/");
+      router.push("/projects");
     } else {
       toast.error("Invalid email or password");
     }
