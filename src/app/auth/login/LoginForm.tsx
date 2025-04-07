@@ -1,29 +1,54 @@
-
 "use client";
 
 import { signIn } from "@/actions/auth";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
+import { loginSchema } from "@/schemas/auth";
+import type { LoginSchema } from "@/schemas/auth";
+
 export function LoginForm() {
   const router = useRouter();
-  const handleClick = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const result = await signIn(formData);
-    if (result.status == "success") {
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const onSubmit = async (data: LoginSchema) => {
+    const result = await signIn(data);
+    if (result.status === "success") {
+      toast.success("Login successful");
       router.push("/");
-      console.log("login success", result.user);
     } else {
-      console.log("login failed", result.status);
+      toast.error("Invalid email or password");
     }
   };
 
   return (
-    <form onSubmit={handleClick} className="flex flex-col gap-4 w-80">
-      <label htmlFor="email">Email:</label>
-      <input id="email" name="email" type="email" required />
-      <label htmlFor="password">Password:</label>
-      <input id="password" name="password" type="password" required />
-      <button>Login</button>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-80">
+      <div className="flex flex-col gap-1">
+        <Label htmlFor="email">Email</Label>
+        <Input id="email" type="email" {...register("email")} />
+        {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <Label htmlFor="password">Password</Label>
+        <Input id="password" type="password" {...register("password")} />
+        {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
+      </div>
+
+      <Button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? "Logging in..." : "Login"}
+      </Button>
     </form>
   );
 }
