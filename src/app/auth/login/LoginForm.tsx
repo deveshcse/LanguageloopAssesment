@@ -133,11 +133,11 @@ export function LoginForm() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const result = await signIn(formData);
-    if (result.status === "success") {
+    if (result.status == "success") {
       router.push("/");
-      console.log("signup success", result.user);
+      console.log("login success", result.user);
     } else {
-      console.log("signIn failed", result.status);
+      console.log("login failed", result.status);
     }
   };
 

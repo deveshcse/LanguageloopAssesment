@@ -43,19 +43,18 @@ export async function signIn(formData: FormData) {
     return { status: error?.message, user: null };
   }
 
+  // Check if user already exists in the database
   const { data: existingUser } = await supabase
-    .from("users")
-    .select("*")
-    .eq("email", credentials?.email)
-    .limit(1)
-    .single();
+  .from("users")
+  .select("*")
+  .eq("email", credentials?.email)
+  .single();
 
   if (!existingUser) {
     const { error: insertError } = await supabase.from("users").insert({
       email: data?.user?.email,
     });
-    console.log("insertError", insertError);
-    if (insertError) {
+     if (insertError) {
       return { status: insertError.message, user: null };
     }
   }
@@ -73,5 +72,5 @@ export async function signOut() {
   }
 
   revalidatePath("/", "layout");
-  redirect("auth/login");
+  redirect("/auth/login");
 }
