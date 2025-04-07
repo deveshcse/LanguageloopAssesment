@@ -2,17 +2,13 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/DataTable";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
+
+import { TaskDialogForm } from "@/components/TaskDialogForm";
+import { DeleteDialog } from "@/components/DeleteDialog";
+import { toast } from "sonner";
 
 type Task = {
   id: string;
@@ -39,7 +35,15 @@ const dummyTasks: Task[] = [
   },
 ];
 
-const statusOptions = ["pending", "in_progress", "completed"];
+const handleDelete = async (id: string) => {
+  try {
+    // Example: await deleteProject(id) or deleteTask(id)
+    toast.success("Deleted successfully");
+    // refetch your data here
+  } catch (error) {
+    toast.error("Failed to delete");
+  }
+};
 
 const columns: ColumnDef<Task>[] = [
   {
@@ -51,20 +55,7 @@ const columns: ColumnDef<Task>[] = [
     header: "Status",
     cell: ({ row }) => {
       const task = row.original;
-      return (
-        <Select defaultValue={task.status}>
-          <SelectTrigger className="w-[150px]">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {statusOptions.map((status) => (
-              <SelectItem key={status} value={status}>
-                {status.replace("_", " ")}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      );
+      return <span className="capitalize">{task.status.replace("_", " ")}</span>;
     },
   },
   {
@@ -74,18 +65,36 @@ const columns: ColumnDef<Task>[] = [
   {
     id: "actions",
     header: "Actions",
-    cell: () => (
-      <div className="flex gap-2">
-        <Button variant="outline" size="sm">
-          Edit
-        </Button>
-        <Button variant="destructive" size="sm">
-          Delete
-        </Button>
-      </div>
-    ),
+    cell: ({ row }) => {
+      const task = row.original;
+
+      return (
+        <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
+          <TaskDialogForm
+            projectId={task.id}
+            initialValues={task}
+            triggerButton={
+              <Button variant="outline" size="sm">
+                Edit
+              </Button>
+            }
+            onSuccess={() => console.log("Refetch tasks")}
+          />
+         <DeleteDialog
+  onConfirm={() => handleDelete(project.id)} // or task.id
+  triggerButton={
+    <Button variant="destructive" size="sm">
+      Delete
+    </Button>
+  }
+/>
+
+        </div>
+      );
+    },
   },
 ];
+
 
 export default function TaskPage() {
   const searchParams = useSearchParams();
@@ -100,8 +109,8 @@ export default function TaskPage() {
         <h1 className="text-2xl font-semibold">
           Tasks for Project ID: {projectId}
         </h1>
-        <Button>Create Task</Button>
-      </div>
+        <TaskDialogForm projectId={projectId!} />
+        </div>
 
       <DataTable columns={columns} data={dummyTasks} />
     </div>

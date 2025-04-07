@@ -6,12 +6,24 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/DataTable";
 import { ProjectDialogForm } from "@/components/ProjectDialogForm";
+import { DeleteDialog } from "@/components/DeleteDialog";
+import { toast } from "sonner";
 
 type Project = {
   id: string;
   name: string;
   description: string;
   created_at: string;
+};
+
+const handleDelete = async (id: string) => {
+  try {
+    // Example: await deleteProject(id) or deleteTask(id)
+    toast.success("Deleted successfully");
+    // refetch your data here
+  } catch (error) {
+    toast.error("Failed to delete");
+  }
 };
 
 const dummyProjects: Project[] = [
@@ -69,16 +81,15 @@ const columns: ColumnDef<Project>[] = [
             //onSuccess={refetchProjects} // Make sure this is available in scope
           />
   
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              // delete handler
-            }}
-          >
-            Delete
-          </Button>
+  <DeleteDialog
+  onConfirm={() => handleDelete(project.id)} // or task.id
+  triggerButton={
+    <Button variant="destructive" size="sm">
+      Delete
+    </Button>
+  }
+/>
+
         </div>
       );
     },

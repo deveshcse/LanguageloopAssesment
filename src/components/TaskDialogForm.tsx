@@ -8,9 +8,9 @@ import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { taskSchema, TaskFormValues } from "@/schemas/taskSchema";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
+import { TaskFormValues, taskSchema } from "@/schemas/taskSchema";
 
 type Props = {
   projectId: string;

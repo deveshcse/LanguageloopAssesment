@@ -8,7 +8,7 @@ const Navbar = async () => {
     const {data: {user}} = await supabase.auth.getUser();
   return (
     <nav className="border-b bg-background w-full flex items-center">
-      <div className="flex w-full items-center justify-between my-4">
+      <div className="flex w-full items-center justify-between my-4 mx-8">
         <Link className="font-bold" href="/">
           Home
         </Link>
