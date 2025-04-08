@@ -5,8 +5,7 @@ import { cn } from "@/lib/utils";
 import { AppProvider } from "./AppProvider";
 import Navbar from "@/components/Navbar";
 import { AuthProvider } from "@/context/AuthContext";
-import { getUserSession } from "@/actions/auth";
-import { redirect } from "next/navigation";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
