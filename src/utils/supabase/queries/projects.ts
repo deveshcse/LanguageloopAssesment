@@ -9,7 +9,10 @@ const {
   if (userError) throw userError;
   if (!user) throw new Error("User not found");
 
+
 export const fetchProjects = async () => {
+    console.log(user); // Log the user ID for debugging
+
   const { data, error } = await supabase.from("projects").select("*");
 
   if (error) throw error;

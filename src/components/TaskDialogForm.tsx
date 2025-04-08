@@ -1,16 +1,28 @@
 // components/TaskDialogForm.tsx
 "use client";
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { toast } from "sonner";
-import { useMutation } from "@tanstack/react-query";
 import { TaskFormValues, taskSchema } from "@/schemas/taskSchema";
+import { useCreateTask, useUpdateTask } from "@/hooks/useTasks";
 
 type Props = {
   projectId: string;
@@ -19,10 +31,14 @@ type Props = {
   onSuccess?: () => void;
 };
 
-export function TaskDialogForm({ triggerButton, initialValues, projectId, onSuccess }: Props) {
+export function TaskDialogForm({
+  triggerButton,
+  initialValues,
+  projectId,
+  onSuccess,
+}: Props) {
   const [open, setOpen] = useState(false);
-
-  const isEditing = !!initialValues;
+  const isEditing = !!initialValues?.id;
 
   const form = useForm<TaskFormValues>({
     resolver: zodResolver(taskSchema),
@@ -33,34 +49,24 @@ export function TaskDialogForm({ triggerButton, initialValues, projectId, onSucc
     },
   });
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: async (data: TaskFormValues) => {
-      const endpoint = isEditing && initialValues?.id
-        ? `/api/tasks/${initialValues.id}`
-        : "/api/tasks";
-
-      const method = isEditing ? "PUT" : "POST";
-
-      const res = await fetch(endpoint, {
-        method,
-        body: JSON.stringify(data),
-      });
-
-      if (!res.ok) throw new Error("Request failed");
-    },
-    onSuccess: () => {
-      toast.success(isEditing ? "Task updated" : "Task created");
-      setOpen(false);
-      form.reset();
-      onSuccess?.();
-    },
-    onError: () => {
-      toast.error("Something went wrong");
-    },
-  });
+  const createTask = useCreateTask(projectId);
+  const updateTask = useUpdateTask(projectId);
 
   const onSubmit = (values: TaskFormValues) => {
-    mutate(values);
+    const payload = { ...values, project_id: projectId };
+
+    const mutation = isEditing
+      ? updateTask.mutateAsync({ id: initialValues!.id, updates: payload })
+      : createTask.mutateAsync(payload);
+
+    mutation
+      .then(() => {
+        toast.success(isEditing ? "Task updated" : "Task created");
+        form.reset();
+        setOpen(false);
+        onSuccess?.();
+      })
+      .catch(() => toast.error("Something went wrong"));
   };
 
   return (
@@ -76,7 +82,9 @@ export function TaskDialogForm({ triggerButton, initialValues, projectId, onSucc
           <Input {...form.register("title")} placeholder="Task Title" />
           <Select
             value={form.watch("status")}
-            onValueChange={(val) => form.setValue("status", val as TaskFormValues["status"])}
+            onValueChange={(val) =>
+              form.setValue("status", val as TaskFormValues["status"])
+            }
           >
             <SelectTrigger>
               <SelectValue placeholder="Select status" />
@@ -88,8 +96,14 @@ export function TaskDialogForm({ triggerButton, initialValues, projectId, onSucc
             </SelectContent>
           </Select>
 
-          <Button type="submit" disabled={isPending}>
-            {isPending ? (isEditing ? "Updating..." : "Creating...") : isEditing ? "Update" : "Create"}
+          <Button type="submit" disabled={createTask.isPending || updateTask.isPending}>
+            {createTask.isPending || updateTask.isPending
+              ? isEditing
+                ? "Updating..."
+                : "Creating..."
+              : isEditing
+              ? "Update"
+              : "Create"}
           </Button>
         </form>
       </DialogContent>
