@@ -1,11 +1,12 @@
+import ClientComponent from "@/components/ClientComponent";
 
 export default function Home() {
 
 
   return (
 
-    <div className="text-red-600 ">
-      <p>Devesh Mishra</p>
+    <div className="flex items-center justify-center bg-background">
+      <ClientComponent />
     </div>
   );
 }

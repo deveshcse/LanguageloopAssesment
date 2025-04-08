@@ -6,6 +6,19 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import { LoginSchema } from "@/schemas/auth";
 
+export async function getUserSession() {
+    const supabase = await createClient();
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      redirect("/auth/login");
+    }
+    if (!data.session) {
+        redirect("/auth/login");
+        }
+    return {status: "success", user: data?.session?.user};
+}
+
+
 export async function signUp(formData: FormData) {
   const supabase = await createClient();
 
