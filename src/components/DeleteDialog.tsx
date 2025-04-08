@@ -1,4 +1,3 @@
-// components/DeleteDialog.tsx
 "use client";
 
 import {
@@ -13,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 interface DeleteDialogProps {
-  triggerButton: React.ReactNode;
+  triggerButton: React.ReactElement; 
   onConfirm: () => void;
   title?: string;
   description?: string;
@@ -35,7 +34,7 @@ export function DeleteDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{triggerButton}</DialogTrigger>
-      <DialogContent>
+      <DialogContent onClick={(e) => e.stopPropagation()}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
@@ -44,7 +43,7 @@ export function DeleteDialog({
           <Button variant="outline" onClick={() => setOpen(false)}>
             Cancel
           </Button>
-          <Button variant="destructive" onClick={handleConfirm} >
+          <Button variant="destructive" onClick={handleConfirm}>
             Confirm
           </Button>
         </DialogFooter>
