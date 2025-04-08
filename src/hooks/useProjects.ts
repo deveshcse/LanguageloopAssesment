@@ -5,6 +5,7 @@ import {
   updateProject,
   deleteProject,
 } from "@/utils/supabase/queries/projects";
+import { ProjectFormValues } from "@/schemas/projectSchema";
 
 export const useProjects = () => {
   return useQuery({ queryKey: ["projects"], queryFn: fetchProjects });
@@ -21,8 +22,12 @@ export const useCreateProject = () => {
 export const useUpdateProject = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, updates }: { id: string; updates: any }) => updateProject(id, updates),
+    mutationFn: ({ id, updates }: { id: string; updates: ProjectFormValues }) => updateProject(id, updates),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["projects"] }),
+    onError: (error) => {
+        console.error("Error updating project:", error);
+        }
+
   });
 };
 

@@ -8,6 +8,7 @@ import { DataTable } from "@/components/DataTable";
 import { ProjectDialogForm } from "@/components/ProjectDialogForm";
 import { DeleteDialog } from "@/components/DeleteDialog";
 import { toast } from "sonner";
+import { useDeleteProject, useProjects } from "@/hooks/useProjects";
 
 type Project = {
   id: string;
@@ -16,30 +17,9 @@ type Project = {
   created_at: string;
 };
 
-const handleDelete = async (id: string) => {
-  try {
-    // Example: await deleteProject(id) or deleteTask(id)
-    toast.success("Deleted successfully");
-    // refetch your data here
-  } catch (error) {
-    toast.error("Failed to delete");
-  }
-};
 
-const dummyProjects: Project[] = [
-  {
-    id: "1",
-    name: "Evaluation System",
-    description: "Internal screening platform",
-    created_at: "2025-04-01",
-  },
-  {
-    id: "2",
-    name: "Onboarding App",
-    description: "Tool for new employee onboarding",
-    created_at: "2025-04-02",
-  },
-];
+
+
 
 const columns: ColumnDef<Project>[] = [
   {
@@ -60,7 +40,8 @@ const columns: ColumnDef<Project>[] = [
     header: "Actions",
     cell: ({ row }) => {
       const project = row.original;
-  
+      
+
       return (
         <div className="flex gap-2">
           <ProjectDialogForm
@@ -80,39 +61,42 @@ const columns: ColumnDef<Project>[] = [
             }
             //onSuccess={refetchProjects} // Make sure this is available in scope
           />
-  
-  <DeleteDialog
-  onConfirm={() => handleDelete(project.id)} // or task.id
-  triggerButton={
-    <Button variant="destructive" size="sm">
-      Delete
-    </Button>
-  }
-/>
 
+          <DeleteDialog
+            onConfirm={() => handleDelete(project.id)} // or task.id
+            triggerButton={
+              <Button variant="destructive" size="sm" onClick={(e) => e.stopPropagation()}>
+                Delete
+              </Button>
+            }
+          />
         </div>
       );
     },
-  }
-  
-  
+  },
 ];
 
 export default function ProjectPage() {
   const router = useRouter();
+  const { data: projects, isLoading, isError } = useProjects();
+
+
+  if (isLoading) return <div>Loading projects...</div>;
+  if (isError) return <div>Failed to load projects</div>;
 
   return (
     <div className="p-6 space-y-4">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold">Projects</h1>
         <ProjectDialogForm />
-
       </div>
       <DataTable
         columns={columns}
-        data={dummyProjects}
-        onRowClick={(project) => router.push(`/projects/tasks?id=${project.id}`)}
-        />
+        data={projects || []}
+        onRowClick={(project) =>
+          router.push(`/projects/tasks?id=${project.id}`)
+        }
+      />
     </div>
   );
 }

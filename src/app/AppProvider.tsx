@@ -6,7 +6,11 @@ import { Toaster } from "@/components/ui/sonner"
 
 const queryClient = new QueryClient();
 
-export const AppProvider = ({ children }: { children: React.ReactNode }) => {
+interface Props {
+  children: React.ReactNode;
+}
+
+export const AppProvider = ({ children }: Props) => {
   return (
     <QueryClientProvider client={queryClient}>
         {children}
@@ -15,3 +19,4 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     </QueryClientProvider>
   );
 };
+ 

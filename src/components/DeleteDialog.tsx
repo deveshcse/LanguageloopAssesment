@@ -44,7 +44,7 @@ export function DeleteDialog({
           <Button variant="outline" onClick={() => setOpen(false)}>
             Cancel
           </Button>
-          <Button variant="destructive" onClick={handleConfirm}>
+          <Button variant="destructive" onClick={handleConfirm} >
             Confirm
           </Button>
         </DialogFooter>
