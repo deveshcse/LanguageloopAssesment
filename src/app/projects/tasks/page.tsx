@@ -33,7 +33,7 @@ export default function TaskPage() {
       await deleteMutation.mutateAsync(id);
       toast.success("Task deleted successfully");
     } catch (error) {
-      toast.error("Failed to delete task");
+      toast.error(`Failed to delete task ${error}`);
     }
   };
 
