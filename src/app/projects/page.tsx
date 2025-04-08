@@ -1,4 +1,3 @@
-// app/project/page.tsx
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -17,69 +16,80 @@ type Project = {
   created_at: string;
 };
 
-
-
-
-
-const columns: ColumnDef<Project>[] = [
-  {
-    accessorKey: "name",
-    header: "Name",
-    cell: ({ row }) => <div>{row.getValue("name")}</div>,
-  },
-  {
-    accessorKey: "description",
-    header: "Description",
-  },
-  {
-    accessorKey: "created_at",
-    header: "Created At",
-  },
-  {
-    id: "actions",
-    header: "Actions",
-    cell: ({ row }) => {
-      const project = row.original;
-      
-
-      return (
-        <div className="flex gap-2">
-          <ProjectDialogForm
-            initialValues={{
-              id: project.id,
-              name: project.name,
-              description: project.description,
-            }}
-            triggerButton={
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={(e) => e.stopPropagation()}
-              >
-                Edit
-              </Button>
-            }
-            //onSuccess={refetchProjects} // Make sure this is available in scope
-          />
-
-          <DeleteDialog
-            onConfirm={() => handleDelete(project.id)} // or task.id
-            triggerButton={
-              <Button variant="destructive" size="sm" onClick={(e) => e.stopPropagation()}>
-                Delete
-              </Button>
-            }
-          />
-        </div>
-      );
-    },
-  },
-];
-
 export default function ProjectPage() {
   const router = useRouter();
-  const { data: projects, isLoading, isError } = useProjects();
+  const { data: projects, isLoading, isError, refetch } = useProjects();
+  const deleteProject = useDeleteProject();
 
+  const handleDelete = (id: string) => {
+    console.log("Deleting project with id:", id); // debug
+
+    deleteProject.mutate(id, {
+      onSuccess: () => {
+        toast.success("Project deleted");
+        refetch();
+      },
+      onError: () => toast.error("Failed to delete project"),
+    });
+  };
+
+  const columns: ColumnDef<Project>[] = [
+    {
+      accessorKey: "name",
+      header: "Name",
+      cell: ({ row }) => <div>{row.getValue("name")}</div>,
+    },
+    {
+      accessorKey: "description",
+      header: "Description",
+    },
+    {
+      accessorKey: "created_at",
+      header: "Created At",
+    },
+    {
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) => {
+        const project = row.original;
+
+        return (
+          <div className="flex gap-2">
+            <ProjectDialogForm
+              initialValues={{
+                id: project.id,
+                name: project.name,
+                description: project.description,
+              }}
+              triggerButton={
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Edit
+                </Button>
+              }
+              onSuccess={refetch}
+            />
+
+            <DeleteDialog
+              onConfirm={() => handleDelete(project.id)}
+              triggerButton={
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Delete
+                </Button>
+              }
+            />
+          </div>
+        );
+      },
+    },
+  ];
 
   if (isLoading) return <div>Loading projects...</div>;
   if (isError) return <div>Failed to load projects</div>;
@@ -88,7 +98,7 @@ export default function ProjectPage() {
     <div className="p-6 space-y-4">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold">Projects</h1>
-        <ProjectDialogForm />
+        <ProjectDialogForm onSuccess={refetch} />
       </div>
       <DataTable
         columns={columns}
