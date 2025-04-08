@@ -15,6 +15,10 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useCreateProject, useUpdateProject } from "@/hooks/useProjects";
 import { ProjectFormValues, projectSchema } from "@/schemas/projectSchema";
+import { useAuth } from "@/context/AuthContext";
+
+
+
 
 type Props = {
   triggerButton?: React.ReactNode;
@@ -29,6 +33,8 @@ export function ProjectDialogForm({
 }: Props) {
   const [open, setOpen] = useState(false);
   const isEditing = !!initialValues?.id;
+  const { user} = useAuth();
+
 
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectSchema),
@@ -48,7 +54,7 @@ export function ProjectDialogForm({
   const createProject = useCreateProject();
   const updateProject = useUpdateProject();
 
-  const onSubmit = (values: ProjectFormValues) => {
+  const onSubmit = (values: { name: string; description: string }) => {
 
     if (isEditing && initialValues?.id) {
       updateProject.mutate(
@@ -70,15 +76,18 @@ export function ProjectDialogForm({
         }
       );
     } else {
-      createProject.mutate(values, {
+      createProject.mutate({
+        name: values.name,
+        description: values.description,
+        user_id: user!.id, 
+      }, {
         onSuccess: () => {
           toast.success("Project created");
           form.reset();
           setOpen(false);
           onSuccess?.();
         },
-        onError: (error) => {
-          console.error("Mutation error:", error); // 👈 make sure this logs
+        onError: () => {
           toast.error("Failed to create project");
         },
       });

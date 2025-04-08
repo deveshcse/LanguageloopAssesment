@@ -12,7 +12,6 @@ const supabase = createClient();
 
 
 export const fetchProjects = async () => {
-    console.log(user); // Log the user ID for debugging
 
   const { data, error } = await supabase.from("projects").select("*");
 
@@ -20,8 +19,8 @@ export const fetchProjects = async () => {
   return data;
 };
 
-export const createProject = async (project: { name: string; description: string }) => {
-  const { data, error } = await supabase.from("projects").insert({ ...project, user_id: user.id }).select().single();
+export const createProject = async (project: { name: string; description: string, user_id:string}) => {
+  const { data, error } = await supabase.from("projects").insert(project).select().single();
 
   if (error) throw error;
   return data;
