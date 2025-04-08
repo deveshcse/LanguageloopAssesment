@@ -32,10 +32,6 @@ export async function signUp(formData: FormData) {
 export async function signIn(credentials: LoginSchema) {
   const supabase = await createClient();
 
-//   const credentials = {
-//     email: formData.get("email") as string,
-//     password: formData.get("password") as string,
-//   };
 
   const { error, data } = await supabase.auth.signInWithPassword(credentials);
 
