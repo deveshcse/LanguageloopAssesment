@@ -1,13 +1,14 @@
 import { createClient } from "@/utils/supabase/client";
 
+
 const supabase = createClient();
-const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
-    // Check if user is logged in
-  if (userError) throw userError;
-  if (!user) throw new Error("User not found");
+// const {
+//     data: { user },
+//     error: userError,
+//   } = await supabase.auth.getUser();
+//     // Check if user is logged in
+//   if (userError) throw userError;
+//   if (!user) throw new Error("User not found");
 
 
 export const fetchProjects = async () => {

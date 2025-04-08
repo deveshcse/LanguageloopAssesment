@@ -4,11 +4,15 @@ import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useAuth } from "@/context/AuthContext";
 
 
   
 export default function ClientComponent() {
     const [user, setUser] = useState<User | null>(null);
+    const { user: user2, loading } = useAuth();
+
+
 
     useEffect(()=>{
         async function getUser(){
@@ -24,5 +28,10 @@ export default function ClientComponent() {
         getUser();
     }, [])
 
-    return <h2 className="mt-20 pt-10">{user?.email}</h2>
+    if (loading) return <p>Loading...</p>;
+
+
+    return <div className="mt-20 pt-10">{user?.email}
+    <div>Hello, {user2?.email}</div>
+    </div>
 }
