@@ -16,7 +16,6 @@ export const fetchTasks = async (projectId: string) => {
 // Create a new task for a project (no user_id)
 export const createTask = async (task: {
   title: string;
-  description: string;
   status: "pending" | "in_progress" | "completed";
   project_id: string;
 }) => {
@@ -35,7 +34,6 @@ export const updateTask = async (
   id: string,
   updates: {
     title?: string;
-    description?: string;
     status?: "pending" | "in_progress" | "completed";
   }
 ) => {

@@ -56,7 +56,7 @@ export function TaskDialogForm({
     const payload = { ...values, project_id: projectId };
 
     const mutation = isEditing
-      ? updateTask.mutateAsync({ id: initialValues!.id, updates: payload })
+      ? updateTask.mutateAsync({ id: initialValues.id!, updates: payload })
       : createTask.mutateAsync(payload);
 
     mutation
