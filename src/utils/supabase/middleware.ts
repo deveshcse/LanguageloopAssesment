@@ -52,18 +52,18 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-// // restrict logged in users from auth pages
-//   if (
-//     user &&
-//     (request.nextUrl.pathname.startsWith('/auth') ||
-//       request.nextUrl.pathname.includes('/auth/login') ||
-//       request.nextUrl.pathname.includes('/auth/register'))
-//   ) {
-//     // user is logged in, redirect to home page
-//     const url = request.nextUrl.clone()
-//     url.pathname = '/projects'
-//     return NextResponse.redirect(url)
-//   }
+// restrict logged in users from auth pages
+  if (
+    user &&
+    (request.nextUrl.pathname.startsWith('/auth') ||
+      request.nextUrl.pathname.includes('/auth/login') ||
+      request.nextUrl.pathname.includes('/auth/register'))
+  ) {
+    // user is logged in, redirect to home page
+    const url = request.nextUrl.clone()
+    url.pathname = '/projects'
+    return NextResponse.redirect(url)
+  }
 
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.

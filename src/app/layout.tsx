@@ -29,11 +29,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
  
-  const response = await getUserSession();
-  const user = response?.user;
-  // if (!user){
-  //   redirect("/auth/login");
-  // }
 
   return (
     <html lang="en">
