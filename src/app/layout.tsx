@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import { AppProvider } from "./AppProvider";
 import Navbar from "@/components/Navbar";
 import { AuthProvider } from "@/context/AuthContext";
+import { getUserSession } from "@/actions/auth";
+import { redirect } from "next/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,11 +23,18 @@ export const metadata: Metadata = {
   description: "A simple assignment to test your skills",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+ 
+  const response = await getUserSession();
+  const user = response?.user;
+  // if (!user){
+  //   redirect("/auth/login");
+  // }
+
   return (
     <html lang="en">
       <body
@@ -36,12 +45,11 @@ export default function RootLayout({
         )}
       >
         <AppProvider>
-        <AuthProvider>
-        <Navbar />
-        {children}
-        </AuthProvider>
+          <AuthProvider>
+            <Navbar />
+            {children}
+          </AuthProvider>
         </AppProvider>
-  
       </body>
     </html>
   );

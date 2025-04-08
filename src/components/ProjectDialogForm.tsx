@@ -35,6 +35,8 @@ export function ProjectDialogForm({
   const isEditing = !!initialValues?.id;
   const { user} = useAuth();
 
+  console.log("user", user); // debug
+
 
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectSchema),

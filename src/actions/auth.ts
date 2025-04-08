@@ -8,14 +8,12 @@ import { LoginSchema } from "@/schemas/auth";
 
 export async function getUserSession() {
     const supabase = await createClient();
-    const { data, error } = await supabase.auth.getSession();
+    const { data, error } = await supabase.auth.getUser();
     if (error) {
-      redirect("/auth/login");
+      return {status: error.message, user: null};
     }
-    if (!data.session) {
-        redirect("/auth/login");
-        }
-    return {status: "success", user: data?.session?.user};
+ 
+    return {status: "success", user: data?.user};
 }
 
 
