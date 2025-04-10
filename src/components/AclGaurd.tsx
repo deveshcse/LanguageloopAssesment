@@ -1,4 +1,3 @@
-// components/AclGuard.tsx
 'use client';
 
 import React from 'react';
@@ -20,7 +19,7 @@ export const AclGuard = ({ pageCode, actionCode, children, fallback }: AclGuardP
     return fallback || (
       <div className="flex justify-center items-center h-screen text-center">
         <div>
-          <h1 className="text-3xl font-bold">🚫 403 Unauthorized</h1>
+          <h1 className="text-3xl font-bold"> 403 Unauthorized</h1>
           <p>You do not have access to view this page.</p>
         </div>
       </div>

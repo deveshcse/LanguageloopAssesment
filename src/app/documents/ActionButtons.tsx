@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui/button";
-import { useAbility } from "@/context/AbilityContext";
+import { AclButton } from "@/components/AclButton";
 
 type Props = {
   item: {
@@ -10,28 +9,26 @@ type Props = {
 };
 
 export const ActionButtons = ({ item }: Props) => {
-  const ability = useAbility();
-
   return (
     <div className="flex gap-2">
-      {ability.can("update", "documents") && (
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => alert("Edit " + item.name)}
-        >
-          Edit
-        </Button>
-      )}
-      {ability.can("delete", "documents") && (
-        <Button
-          variant="destructive"
-          size="sm"
-          onClick={() => alert("Delete " + item.name)}
-        >
-          Delete
-        </Button>
-      )}
+      <AclButton
+        action="update"
+        subject="documents"
+        variant="outline"
+        size="sm"
+        onClick={() => alert("Edit " + item.name)}
+      >
+        Edit
+      </AclButton>
+      <AclButton
+        action="delete"
+        subject="documents"
+        variant="destructive"
+        size="sm"
+        onClick={() => alert("Delete " + item.name)}
+      >
+        Delete
+      </AclButton>
     </div>
   );
 };

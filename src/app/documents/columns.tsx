@@ -1,18 +1,40 @@
-import type { ColumnDef } from "@tanstack/react-table";
-import { ActionButtons } from "./ActionButtons"; // adjust path
+'use client';
 
-export const columns: ColumnDef<{ id: number; name: string; status: string }>[] = [
+
+
+import { ColumnDef } from "@tanstack/react-table";
+import { AclButton } from "@/components/AclButton";
+
+type Item = {
+    id: string;
+    name: string;
+    description: string;
+    created_at: string;
+  };
+
+export const columns: ColumnDef<Item>[] = [
   {
-    accessorKey: "name",
-    header: "Name",
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "title",
+    header: "Title",
   },
   {
     id: "actions",
     header: "Actions",
-    cell: ({ row }) => <ActionButtons item={row.original} />,
+    cell: ({ row }) => {
+      const doc = row.original;
+      return (
+        <div className="flex gap-2">
+          <AclButton action="view" subject="documents" onClick={() => alert(`Viewing ${doc.title}`)}>
+            View
+          </AclButton>
+          <AclButton action="update" subject="documents" onClick={() => alert(`Editing ${doc.title}`)}>
+            Edit
+          </AclButton>
+          <AclButton action="delete" subject="documents" variant="destructive" onClick={() => alert(`Deleting ${doc.title}`)}>
+            Delete
+          </AclButton>
+        </div>
+      );
+    },
   },
 ];

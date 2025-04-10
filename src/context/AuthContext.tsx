@@ -6,6 +6,7 @@ import type { User } from "@supabase/supabase-js";
 import { AbilityContext } from "./AbilityContext";
 import { Actions, defineAbilitiesFor } from "@/lib/defineAbilities";
 import { AclGuard } from "@/components/AclGaurd";
+import { usePathname } from "next/navigation";
 
 type AuthContextType = {
   user: User | null;
@@ -22,8 +23,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
 
+  const pathname = usePathname();
+  console.log("pathname", pathname); // debug
+
+  // 1. Map route to pageCode
+  const extractPageCode = (path: string) => {
+    const segments = path.split("/").filter(Boolean);
+    return segments[0] || "dashboard"; // fallback to dashboard
+  };
+
+  const pageCode = extractPageCode(pathname);
+  console.log("pageCode", pageCode); // debug
+
     // Mock hardcoded permissions for demonstration purposes
     const userPermissions: { page_code: string; action_code: Actions }[] = [
+      { page_code: "private", action_code: "view" },
+
       { page_code: "dashboard", action_code: "view" },
       { page_code: "documents", action_code: "view" },
       { page_code: "documents", action_code: "create" },
@@ -60,7 +75,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     <AuthContext.Provider value={{ user, loading }}>
       <AbilityContext.Provider value={ability}>
-        <AclGuard pageCode="dashboard" actionCode="view">
+        <AclGuard pageCode={pageCode} actionCode="view">
           {children}
         </AclGuard>
       </AbilityContext.Provider>

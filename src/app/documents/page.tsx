@@ -1,22 +1,38 @@
-"use client";
+import { columns } from "./columns"; // Assuming you export them
+import { DataTable } from "@/components/DataTable";
 
-import { DataTable } from "@/components/DataTable"; // your shared component
-import { columns } from "./columns";
+export default function DocumentsPage() {
+  type Item = {
+    id: string;
+    title: string;
+    description: string;
+    createdAt: string;
+  };
 
-const data = [
-  { id: 1, name: "Document A", status: "Draft" },
-  { id: 2, name: "Document B", status: "Published" },
-  { id: 3, name: "Document C", status: "Archived" },
-];
+  const documentsData: Item[] = [
+    {
+      id: "doc_001",
+      title: "Employee Handbook",
+      description: "Company policies and procedures.",
+      createdAt: "2025-04-10",
+    },
+    {
+      id: "doc_002",
+      title: "Project Plan Q2",
+      description: "Objectives and timeline for Q2 project.",
+      createdAt: "2025-04-09",
+    },
+    {
+      id: "doc_003",
+      title: "Budget Report",
+      description: "Detailed expense report for March.",
+      createdAt: "2025-04-08",
+    },]
 
-
-
-export default function DocumentPage() {
   return (
-    <div className="p-6 space-y-4">
-      <h2 className="text-2xl font-bold">Documents</h2>
-
-      <DataTable columns={columns} data={data} />
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">Documents</h1>
+      <DataTable columns={columns} data={documentsData} />
     </div>
   );
 }
