@@ -40,15 +40,15 @@ export async function updateSession(request: NextRequest) {
   if (
     !user &&
     !request.nextUrl.pathname.startsWith('/auth') &&
-    !request.nextUrl.pathname.includes('/auth/login') &&
-    !request.nextUrl.pathname.includes('/auth/register')
+    !request.nextUrl.pathname.includes('/login') &&
+    !request.nextUrl.pathname.includes('/register')
 
 
 
   ) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone()
-    url.pathname = '/auth/login'
+    url.pathname = '/login'
     return NextResponse.redirect(url)
   }
 
@@ -56,8 +56,8 @@ export async function updateSession(request: NextRequest) {
   if (
     user &&
     (request.nextUrl.pathname.startsWith('/auth') ||
-      request.nextUrl.pathname.includes('/auth/login') ||
-      request.nextUrl.pathname.includes('/auth/register'))
+      request.nextUrl.pathname.includes('/login') ||
+      request.nextUrl.pathname.includes('/register'))
   ) {
     // user is logged in, redirect to home page
     const url = request.nextUrl.clone()

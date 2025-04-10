@@ -5,7 +5,7 @@ import {
   MongoQuery,
 } from "@casl/ability";
 
-export type Actions = "view" | "create" | "update" | "delete";
+export type Actions = "view"| "edit" | "create" | "update" | "delete";
 export type Subjects = string; // like 'dashboard', 'report', etc.
 
 export type AppAbility = MongoAbility<[Actions, Subjects], MongoQuery>;

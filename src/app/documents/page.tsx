@@ -1,13 +1,14 @@
+import { Item } from "@/types/item";
 import { columns } from "./columns"; // Assuming you export them
 import { DataTable } from "@/components/DataTable";
 
 export default function DocumentsPage() {
-  type Item = {
-    id: string;
-    title: string;
-    description: string;
-    createdAt: string;
-  };
+  // type Item = {
+  //   id: string;
+  //   title: string;
+  //   description: string;
+  //   createdAt: string;
+  // };
 
   const documentsData: Item[] = [
     {
