@@ -33,7 +33,7 @@ export function ProjectDialogForm({
 }: Props) {
   const [open, setOpen] = useState(false);
   const isEditing = !!initialValues?.id;
-  const { user} = useAuth();
+  const { user, loading } = useAuth();
 
   console.log("user", user); // debug
 

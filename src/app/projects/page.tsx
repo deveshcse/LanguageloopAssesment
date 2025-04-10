@@ -33,6 +33,7 @@ export default function ProjectPage() {
     });
   };
 
+  // learn to hide a colunm
   const columns: ColumnDef<Project>[] = [
     {
       accessorKey: "name",

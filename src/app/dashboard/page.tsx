@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { defineAbilityFor } from "@/lib/ability";
+import { defineAbilityFor } from "@/lib/defineAbilities";
 import { ACTIONS, PAGES } from "@/lib/permissions";
 
 const userType: "admin" | "user" = "user";
