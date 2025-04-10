@@ -1,17 +1,9 @@
 'use client';
 
-
-
 import { ColumnDef } from "@tanstack/react-table";
 import { AclButton } from "@/components/AclButton";
 import { Item } from "@/types/item";
 
-// type Item = {
-//     id: string;
-//     name: string;
-//     description: string;
-//     created_at: string;
-//   };
 
 export const columns: ColumnDef<Item>[] = [
   {

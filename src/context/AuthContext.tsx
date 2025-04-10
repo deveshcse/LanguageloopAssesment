@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     ];
 
     const ability = defineAbilitiesFor(userPermissions);
-
+    console.log("ability", ability); // debug
 
   useEffect(() => {
 

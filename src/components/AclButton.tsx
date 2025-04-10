@@ -18,7 +18,7 @@ export const AclButton = ({
 }: AclButtonProps) => {
   const ability = useAbility();
 
-  console.log("ability in acl button for:", subject, action, ability)
+  //console.log("ability in acl button for:", subject, action, ability)
 
   if (!ability.can(action, subject)) return null;
 
