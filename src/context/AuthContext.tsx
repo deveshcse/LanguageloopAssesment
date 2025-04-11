@@ -40,6 +40,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       { page_code: "private", action_code: "view" },
       { page_code: "login", action_code: "view" },
       { page_code: "register", action_code: "view" },
+      { page_code: "posts", action_code: "view" },
       { page_code: "projects", action_code: "view" },
       { page_code: "dashboard", action_code: "view" },
       { page_code: "documents", action_code: "view" },
