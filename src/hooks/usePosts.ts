@@ -3,24 +3,22 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const fetchPosts = async (page?: number, limit?: number): Promise<PostsApiResponse> => {
-  let url = "https://dummyjson.com/posts";
-
-  if (page && limit) {
+  if (page !== undefined && limit !== undefined) {
     const skip = (page - 1) * limit;
-    url += `?limit=${limit}&skip=${skip}`;
+    const res = await axios.get(`https://dummyjson.com/posts?limit=${limit}&skip=${skip}`);
+    return res.data;
   } else {
-    url += `?limit=251`; // Fetch all if no pagination params
+    const res = await axios.get("https://dummyjson.com/posts?limit=251"); 
+    return res.data;
   }
-
-  const res = await axios.get(url);
-  return res.data;
 };
 
 export const usePosts = (page?: number, limit?: number) => {
-  return useQuery({
-    queryKey: ["posts", page, limit],
+  const isPaginated = page !== undefined && limit !== undefined;
+
+  return useQuery<PostsApiResponse, Error>({
+    queryKey: isPaginated ? ["posts", page, limit] : ["posts"],
     queryFn: () => fetchPosts(page, limit),
-    keepPreviousData: true,
-    staleTime: 1000 * 60 * 5, // optional: avoid refetch for 5 mins
+    ...(isPaginated && { keepPreviousData: true }), // only include this when paginated
   });
 };
