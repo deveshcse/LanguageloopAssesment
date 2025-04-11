@@ -29,7 +29,7 @@ export const ServerSidePagination = () => {
             <Button disabled={page === 1} onClick={() => setPage(p => p - 1)}>
               Previous
             </Button>
-            <span>Page {page}</span>
+            <span>Page {page} of {Math.ceil((data.total)/limit)}</span>
             <Button
               disabled={(page * limit) >= data.total}
               onClick={() => setPage(p => p + 1)}
