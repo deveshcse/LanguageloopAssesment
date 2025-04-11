@@ -1,8 +1,8 @@
-'use client';
 
+import { Post } from "@/types/postResponseTypes";
 import { ColumnDef } from "@tanstack/react-table";
-import { Post } from "@/types/post";
-export const postColumns: ColumnDef<Post>[] = [
+
+export const columns: ColumnDef<Post>[] = [
   {
     accessorKey: "id",
     header: "ID",
@@ -12,7 +12,17 @@ export const postColumns: ColumnDef<Post>[] = [
     header: "Title",
   },
   {
-    accessorKey: "body",
-    header: "Body",
+    accessorKey: "views",
+    header: "Views",
+  },
+  {
+    accessorKey: "reactions.likes",
+    header: "Likes",
+    cell: ({ row }) => row.original.reactions.likes,
+  },
+  {
+    accessorKey: "reactions.dislikes",
+    header: "Dislikes",
+    cell: ({ row }) => row.original.reactions.dislikes,
   },
 ];
