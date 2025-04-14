@@ -39,7 +39,7 @@ export const CustomFormComponent = () => {
     <div>
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
-            <NestedFormComponent {...methods} />
+            <NestedFormComponent />
 
           <button type="submit">Submit</button>
         </form>

@@ -2,8 +2,7 @@ import React from "react";
 import { useFormContext } from "react-hook-form";
 
 export const NestedFormComponent = () => {
-  const { register } = useFormContext();
-
+    const {register} = useFormContext()
   return (
     <div>
       <div>
