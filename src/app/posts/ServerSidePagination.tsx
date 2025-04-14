@@ -38,7 +38,7 @@ export const ServerSidePagination = () => {
               disabled={(page * limit) >= data.total || isFetching || isPlaceholderData}
               onClick={() => setPage(p => p + 1)}
             >
-              Next
+              {isFetching? "Loading..." : "Next"}
             </Button>
           </div>
         </div>
