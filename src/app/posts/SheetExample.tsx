@@ -1,26 +1,37 @@
+import { Button } from "@/components/ui/button";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "@/components/ui/sheet";
+import { useState } from "react";
 
 const SheetExample = () => {
+
+  const [open, setOpen] = useState(false);
+
   return (
-    <Sheet>
-      <SheetTrigger>Click to Open Sheet </SheetTrigger>
-      <SheetContent>
-        <SheetHeader>
-          <SheetTitle>Are you absolutely sure?</SheetTitle>
-          <SheetDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </SheetDescription>
-        </SheetHeader>
-      </SheetContent>
-    </Sheet>
+    <div>
+      <Button variant="outline" onClick={() => setOpen(true)}>
+        Open Sheet
+      </Button>
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent>
+          <SheetClose onClick={() => setOpen(false)}>Close</SheetClose>
+
+          <SheetHeader>
+            <SheetTitle>Are you absolutely sure?</SheetTitle>
+            <SheetDescription>
+              This action cannot be undone. This will permanently delete your
+              account and remove your data from our servers.
+            </SheetDescription>
+          </SheetHeader>
+        </SheetContent>
+      </Sheet>
+    </div>
   );
 };
 
