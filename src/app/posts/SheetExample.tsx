@@ -9,44 +9,45 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { useSignal } from "@preact/signals-react";
-import { useEffect } from "react";
+import { useSignals } from "@preact/signals-react/runtime";
+import { signal } from "@preact/signals-react";
+const isSheetOpen = signal(false);
 
 const SheetExample = () => {
-  const isSheetOpen = useSignal(false);
-
-  useEffect(() => {
-    console.log("Sheet open state changed:", isSheetOpen.value);
-  }, [isSheetOpen.value]); // This will trigger a log whenever the value changes
-
+  useSignals();
 
   return (
     <div>
       <Button
         variant="outline"
         onClick={() => {
-          console.log("Open Sheet button clicked", isSheetOpen.value);
+          console.log("Open Sheet button clicked");
           isSheetOpen.value = true;
+          console.log(
+            "Sheet open state after button click:",
+            isSheetOpen.value
+          );
         }}
       >
         Open Sheet
       </Button>
+
       <Sheet
         open={isSheetOpen.value}
         onOpenChange={(value) => {
-          console.log("Sheet open state changed:", value);
+          console.log("Sheet open state changed via onOpenChange:", value);
           isSheetOpen.value = value;
         }}
       >
         <SheetContent>
-          <SheetClose
+          {/* <SheetClose
             onClick={() => {
               console.log("Close button clicked inside Sheet");
               isSheetOpen.value = false;
             }}
           >
             Close
-          </SheetClose>
+          </SheetClose> */}
 
           <SheetHeader>
             <SheetTitle>Are you absolutely sure?</SheetTitle>
