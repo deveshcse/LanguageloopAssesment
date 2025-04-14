@@ -1,5 +1,5 @@
 import { PostsApiResponse } from "@/types/postResponseTypes";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import axios from "axios";
 
 const fetchPosts = async (page?: number, limit?: number): Promise<PostsApiResponse> => {
@@ -19,6 +19,6 @@ export const usePosts = (page?: number, limit?: number) => {
   return useQuery<PostsApiResponse, Error>({
     queryKey: isPaginated ? ["posts", page, limit] : ["posts"],
     queryFn: () => fetchPosts(page, limit),
-    ...(isPaginated && { keepPreviousData: true }), // only include this when paginated
+    placeholderData: keepPreviousData, 
   });
 };

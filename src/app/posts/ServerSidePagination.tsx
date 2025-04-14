@@ -15,10 +15,14 @@ export const ServerSidePagination = () => {
     const [page, setPage] = useState(1);
     const limit = 10;
   
-    const { data, isLoading, isError } = usePosts(page, limit);
+    const { data, isLoading, isError, isFetching,  isPlaceholderData } = usePosts(page, limit);
+
+    console.log("ispreviousdata", isPlaceholderData);
+
   
     if (isLoading) return <div>Loading...</div>;
     if (isError || !data) return <div>Error fetching posts</div>;
+
   
     return (
         <div className="space-y-4">
@@ -26,12 +30,12 @@ export const ServerSidePagination = () => {
           <DataTable columns={columns} data={data.posts} />
     
           <div className="flex justify-between items-center">
-            <Button disabled={page === 1} onClick={() => setPage(p => p - 1)}>
+            <Button disabled={page === 1 || isFetching || isPlaceholderData} onClick={() => setPage(p => p - 1)}>
               Previous
             </Button>
             <span>Page {page} of {Math.ceil((data.total)/limit)}</span>
             <Button
-              disabled={(page * limit) >= data.total}
+              disabled={(page * limit) >= data.total || isFetching || isPlaceholderData}
               onClick={() => setPage(p => p + 1)}
             >
               Next
