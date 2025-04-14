@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -7,20 +9,44 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { useState } from "react";
+import { useSignal } from "@preact/signals-react";
+import { useEffect } from "react";
 
 const SheetExample = () => {
+  const isSheetOpen = useSignal(false);
 
-  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    console.log("Sheet open state changed:", isSheetOpen.value);
+  }, [isSheetOpen.value]); // This will trigger a log whenever the value changes
+
 
   return (
     <div>
-      <Button variant="outline" onClick={() => setOpen(true)}>
+      <Button
+        variant="outline"
+        onClick={() => {
+          console.log("Open Sheet button clicked", isSheetOpen.value);
+          isSheetOpen.value = true;
+        }}
+      >
         Open Sheet
       </Button>
-      <Sheet open={open} onOpenChange={setOpen}>
+      <Sheet
+        open={isSheetOpen.value}
+        onOpenChange={(value) => {
+          console.log("Sheet open state changed:", value);
+          isSheetOpen.value = value;
+        }}
+      >
         <SheetContent>
-          <SheetClose onClick={() => setOpen(false)}>Close</SheetClose>
+          <SheetClose
+            onClick={() => {
+              console.log("Close button clicked inside Sheet");
+              isSheetOpen.value = false;
+            }}
+          >
+            Close
+          </SheetClose>
 
           <SheetHeader>
             <SheetTitle>Are you absolutely sure?</SheetTitle>
