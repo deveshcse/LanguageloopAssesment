@@ -1,8 +1,11 @@
+"use client"
+
 import React from "react";
 import { useFormContext } from "react-hook-form";
 
 export const NestedFormComponent = () => {
-    const {register} = useFormContext()
+  const { register, formState } = useFormContext();
+  console.log("formstate", formState);
   return (
     <div>
       <div>
@@ -13,6 +16,7 @@ export const NestedFormComponent = () => {
       <div>
         <label htmlFor="email">Email</label>
         <input id="email" {...register("email")} />
+
       </div>
 
       <div>
