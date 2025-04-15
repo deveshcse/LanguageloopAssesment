@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
@@ -40,15 +39,6 @@ const SheetExample = () => {
         }}
       >
         <SheetContent>
-          {/* <SheetClose
-            onClick={() => {
-              console.log("Close button clicked inside Sheet");
-              isSheetOpen.value = false;
-            }}
-          >
-            Close
-          </SheetClose> */}
-
           <SheetHeader>
             <SheetTitle>Are you absolutely sure?</SheetTitle>
             <SheetDescription>
