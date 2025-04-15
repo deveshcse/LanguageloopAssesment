@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { usePosts } from "@/hooks/usePosts";
 import { Button } from "@/components/ui/button";
 import { columns } from "./columns";
 import { DataTable } from "@/components/DataTable";
