@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 
   const pathname = usePathname();
-  console.log("pathname", pathname); // debug
+  //console.log("pathname", pathname); // debug
 
   // 1. Map route to pageCode
   const extractPageCode = (path: string) => {
@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const pageCode = extractPageCode(pathname);
-  console.log("pageCode", pageCode); // debug
+  //console.log("pageCode", pageCode); // debug
 
     // Mock hardcoded permissions for demonstration purposes
     const userPermissions: { page_code: string; action_code: Actions }[] = [
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     ];
 
     const ability = defineAbilitiesFor(userPermissions);
-    console.log("ability", ability); // debug
+    //console.log("ability", ability); // debug
 
   useEffect(() => {
 

@@ -21,6 +21,6 @@ export const usePosts = (page?: number, limit?: number) => {
   return useQuery({
     queryKey: isPaginated ? ["posts", page, limit] : ["posts"],
     queryFn: () => fetchPosts(page, limit),
-    placeholderData: keepPreviousData, 
+    placeholderData: keepPreviousData,
   });
 };
