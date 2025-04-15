@@ -5,18 +5,27 @@ import { usePosts } from "@/hooks/usePosts";
 import { Button } from "@/components/ui/button";
 import { columns } from "./columns";
 import { DataTable } from "@/components/DataTable";
+import { keepPreviousData } from "@tanstack/react-query";
+import { useCustomQuery } from "@/hooks/useCustomQuery";
 
 
 export const ServerSidePagination = () => {
   const [page, setPage] = useState(1);
   const limit = 10;
 
-  const { data, isLoading, isError, isFetching, isPlaceholderData } = usePosts(
-    page,
-    limit
-  );
 
-  console.log("ispreviousdata", isPlaceholderData);
+    const {
+      data, isLoading, isError, isFetching, isPlaceholderData,
+  
+    } = useCustomQuery({
+      apiPath: "posts",
+      payload: { limit: 10, skip: (page - 1) * limit },
+      showToastMsg: "Posts fetched successfully",
+      queryKey: ["posts", page],
+      placeholderData: keepPreviousData,
+    });
+  
+
 
   if (isLoading) return <div>Loading...</div>;
   if (isError || !data) return <div>Error fetching posts</div>;
