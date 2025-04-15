@@ -13,10 +13,12 @@ const fetchPosts = async (page?: number, limit?: number): Promise<PostsApiRespon
   }
 };
 
+
+//keep all props pf react query and extra props
 export const usePosts = (page?: number, limit?: number) => {
   const isPaginated = page !== undefined && limit !== undefined;
 
-  return useQuery<PostsApiResponse, Error>({
+  return useQuery({
     queryKey: isPaginated ? ["posts", page, limit] : ["posts"],
     queryFn: () => fetchPosts(page, limit),
     placeholderData: keepPreviousData, 
