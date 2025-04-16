@@ -1,12 +1,13 @@
 
 import React from "react";
 import { CustomFormComponent } from "./CustomFormComponent";
+import DynamicForm from "./DynamicForm";
 
 const page = () => {
   return (
     <div>
-      dashboard page
-      <CustomFormComponent />
+      {/* <CustomFormComponent /> */}
+      <DynamicForm />
     </div>
   );
 };
