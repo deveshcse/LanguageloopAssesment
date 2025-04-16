@@ -1,13 +1,13 @@
 
 import React from "react";
-import { CustomFormComponent } from "./CustomFormComponent";
 import DynamicForm from "./DynamicForm";
+import { FormComponent } from "./FormComponent";
 
 const page = () => {
   return (
     <div>
-      {/* <CustomFormComponent /> */}
-      <DynamicForm />
+      {/* <DynamicForm /> */}
+      <FormComponent />
     </div>
   );
 };

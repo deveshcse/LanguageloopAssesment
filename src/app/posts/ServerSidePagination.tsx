@@ -17,14 +17,18 @@ export const ServerSidePagination = () => {
       data, isLoading, isError, isFetching, isPlaceholderData,
   
     } = useCustomQuery({
+
       apiPath: "posts",
-      payload: { limit: 10, skip: (page - 1) * limit },
+      payload: { limit: 10, skip: (page - 1) * limit, sortBy: "title", order: "asc" },
       showToastMsg: "Posts fetched successfully",
       queryKey: ["posts", page],
-      placeholderData: keepPreviousData,
-    });
-  
 
+       placeholderData: keepPreviousData,
+    });
+
+
+  
+// 
 
   if (isLoading) return <div>Loading...</div>;
   if (isError || !data) return <div>Error fetching posts</div>;

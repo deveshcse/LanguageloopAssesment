@@ -2,6 +2,8 @@ import axiosInstance from "./axios";
 interface PostQueryParams {
   limit?: number;
   skip?: number;
+  sortBy?: string;
+  order?: string;
 }
 type FetcherParams = {
   apiPath: string;

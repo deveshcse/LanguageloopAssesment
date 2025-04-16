@@ -8,7 +8,8 @@ const fetchPosts = async (page?: number, limit?: number): Promise<PostsApiRespon
     const res = await axios.get(`https://dummyjson.com/posts?limit=${limit}&skip=${skip}`);
     return res.data;
   } else {
-    const res = await axios.get("https://dummyjson.com/posts?limit=251"); 
+    //const res = await axios.get("https://dummyjson.com/posts?limit=251"); 
+    const res = await axios.get("https://dummyjson.com/posts?sortBy=title&order=asc?limit=251");
     return res.data;
   }
 };
